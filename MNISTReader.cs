@@ -44,13 +44,10 @@ namespace NumbersNN
             for (int i = 0; i < numImages; i++)
             {
                 byte[] bytes = images.ReadBytes(numRows * numCols);
-                byte[,] arr = new byte[numCols, numRows];
-
-                arr.ForEach((j, k) => arr[j, k] = bytes[j * numCols + k]);
                 
                 yield return new Image()
                 {
-                    Pixels = arr,
+                    Pixels = bytes,
                     Label = labels.ReadByte()
                 };
             }
@@ -66,22 +63,13 @@ namespace NumbersNN
             return BitConverter.ToInt32(bytes, 0);
         }
 
-        public static void ForEach<T>(this T[,] source, Action<int, int> action)
-        {
-            for (int r = 0; r < source.GetLength(0); r++)
-            {
-                for (int c = 0; c < source.GetLength(1); c++)
-                {
-                    action(r, c);
-                }
-            }
-        }
+
 
     }
 
     public class Image
     {
-        public byte[,] Pixels { get; set; }
+        public byte[] Pixels { get; set; }
         public byte Label { get; set; }
     }
 }
